@@ -1,20 +1,14 @@
 # mathjax-svelte
 
----
-
 Svelte component for MathJax
 
 ## Installation
-
----
 
 ```bash
 npm i mathjax-svelte
 ```
 
 ## Usage
-
----
 
 ```svelte
 <script>
@@ -25,8 +19,6 @@ npm i mathjax-svelte
 ```
 
 ## API
-
----
 
 ### Math
 
@@ -62,8 +54,6 @@ export interface MathJaxConfig {
 
 ## Developing
 
----
-
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
@@ -74,8 +64,6 @@ npm run dev -- --open
 ```
 
 ## Building
-
----
 
 To create a production version of your app:
 
