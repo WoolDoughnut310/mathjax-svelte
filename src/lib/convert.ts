@@ -6,21 +6,29 @@ import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html';
 import type { OptionList } from 'mathjax-full/js/util/Options';
 
 export interface MathJaxConfig {
-	src: string;
-	node: HTMLElement;
-	display: boolean;
-	settings: OptionList;
+	t: string;
+	node?: HTMLElement;
+	display?: boolean;
+	settings?: OptionList;
 }
 
-const adaptor = browserAdaptor();
-RegisterHTMLHandler(adaptor);
+let adaptor: ReturnType<typeof browserAdaptor>;
+let tex: TeX<unknown, unknown, unknown>;
+let chtml: CHTML<HTMLElement, unknown, unknown>;
 
-const tex = new TeX({ packages: ['base', 'ams'] });
-const chtml: CHTML<HTMLElement, unknown, unknown> = new CHTML({
-	fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2'
-});
+let tex_chtml_html: ReturnType<typeof mathjax.document>;
 
-const tex_chtml_html = mathjax.document('', { InputJax: tex, OutputJax: chtml });
+export function initialize() {
+	adaptor = browserAdaptor();
+	RegisterHTMLHandler(adaptor);
+
+	tex = new TeX({ packages: ['base', 'ams'] });
+	chtml = new CHTML({
+		fontURL: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2'
+	});
+
+	tex_chtml_html = mathjax.document('', { InputJax: tex, OutputJax: chtml });
+}
 
 const STYLES_ID = 'mathjax-styles';
 
@@ -34,10 +42,25 @@ const updateStyles = (styles: string) => {
 	styleNode.innerHTML = styles;
 };
 
-export default function convert(config: MathConvertConfig) {
-	if (!node) throw new Error();
-	const math = src.trim();
-	const metric = chtml.getMetricsFor(node, display);
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = { promise: Promise.resolve(''), cancel: () => {} };
+
+export default function useMathJax({ node, display, t, settings }: MathJaxConfig) {
+	if (!tex_chtml_html) {
+		console.warn('MathJax not initialized');
+		return noop;
+	}
+
+	if (!node) {
+		console.warn('No target node specified');
+		return noop;
+	}
+
+	display ??= true;
+	settings ??= {};
+
+	const math = t.trim();
+	const metrics = chtml.getMetricsFor(node, display);
 
 	let canceled = false;
 
@@ -46,13 +69,13 @@ export default function convert(config: MathConvertConfig) {
 	const promise = mathjax
 		.handleRetriesFor(() => {
 			if (canceled) {
-				throw new Error('Render cancelled.');
+				throw new Error('MathJax render cancelled');
 			}
 
 			const dom = tex_chtml_html.convert(math, {
 				display,
-				...settings,
-				metric
+				...metrics,
+				...settings
 			});
 
 			return dom;

@@ -1,17 +1,27 @@
-import convert, { type MathJaxConfig } from './convert';
+import { onDestroy, onMount } from 'svelte';
+import { writable } from 'svelte/store';
+import convert, { initialize, type MathJaxConfig } from './convert';
 
-export async function useMathJax(config: MathJaxConfig) {
-	if (!config.node) return {};
+export default function useMathJax(config: MathJaxConfig) {
+	const output = writable('');
+	const error = writable();
+
+	onMount(initialize);
+
 	const { promise, cancel } = convert(config);
 
-	let output = null;
-	let error = null;
+	onDestroy(cancel);
 
-	try {
-		output = await promise;
-	} catch (err) {
-		error = err;
-	}
+	output.set('Loading...');
 
-	return { output, error, cancel };
+	(async () => {
+		try {
+			output.set(await promise);
+		} catch (err) {
+			error.set(err);
+			output.set('');
+		}
+	})();
+
+	return { output, error };
 }

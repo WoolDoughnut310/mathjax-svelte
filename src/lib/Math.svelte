@@ -1,13 +1,17 @@
 <script lang="ts">
-	import { useMathJax } from './useMathJax';
-	import type { OptionList } from 'mathjax-full/js/util/Options';
+	import type { MathJaxConfig } from './convert';
+	import useMathJax from './useMathJax';
+
+	let className = '';
+	let mathElement: MathJaxConfig['node'];
 
 	export let display = true;
 	export let t = '';
-	export let settings: OptionList | undefined;
+	export let settings: MathJaxConfig['settings'] = {};
 
-	//complete
-	const { output, error } = useMathJax({});
+	$: ({ output } = useMathJax({ display, t, settings, node: mathElement }));
 </script>
 
-<div class="w-80 h-60 flex justify-center items-center">{@html outputHTML}</div>
+<svelte:element this={display ? 'div' : 'span'} bind:this={mathElement} class={className}
+	>{@html $output}</svelte:element
+>

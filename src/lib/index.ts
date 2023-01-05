@@ -1,4 +1,3 @@
 // Reexport your entry components here
-import Math from './Math.svelte';
-
-export { MathComponent } from './MathComponent.svelte';
+export { default as Math } from './Math.svelte';
+export { default as useMathJax } from './useMathJax';
