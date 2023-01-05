@@ -5,6 +5,13 @@ import { browserAdaptor } from 'mathjax-full/js/adaptors/browserAdaptor';
 import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html';
 import type { OptionList } from 'mathjax-full/js/util/Options';
 
+export interface MathJaxConfig {
+	src: string;
+	node: HTMLElement;
+	display: boolean;
+	settings: OptionList;
+}
+
 const adaptor = browserAdaptor();
 RegisterHTMLHandler(adaptor);
 
@@ -27,12 +34,7 @@ const updateStyles = (styles: string) => {
 	styleNode.innerHTML = styles;
 };
 
-export default function convert(
-	src: string,
-	node: HTMLElement,
-	display: boolean,
-	settings: OptionList
-) {
+export default function convert(config: MathConvertConfig) {
 	if (!node) throw new Error();
 	const math = src.trim();
 	const metric = chtml.getMetricsFor(node, display);

@@ -1,12 +1,17 @@
-import type { OptionList } from 'mathjax-full/js/util/Options';
-import { afterUpdate } from 'svelte';
-import convert from './convert';
+import convert, { type MathJaxConfig } from './convert';
 
-export interface UseMathJaxConfig {
-	src: string;
-	node: HTMLElement;
-	display: boolean;
-	settings: OptionList;
+export async function useMathJax(config: MathJaxConfig) {
+	if (!config.node) return {};
+	const { promise, cancel } = convert(config);
+
+	let output = null;
+	let error = null;
+
+	try {
+		output = await promise;
+	} catch (err) {
+		error = err;
+	}
+
+	return { output, error, cancel };
 }
-
-export function useMathJax(config) {}
