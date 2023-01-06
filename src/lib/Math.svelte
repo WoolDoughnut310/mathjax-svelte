@@ -9,6 +9,8 @@
 	export let t = '';
 	export let settings: MathJaxConfig['settings'] = {};
 
+	export { className as class };
+
 	$: ({ output } = useMathJax({ display, t, settings, node: mathElement }));
 </script>
 

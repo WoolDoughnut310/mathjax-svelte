@@ -29,6 +29,7 @@ npm i mathjax-svelte
 | t        | String  | ""      |
 | display  | Boolean | true    |
 | settings | Object  | {}      |
+| class    | String  | ""      |
 
 ### useMathJax
 
