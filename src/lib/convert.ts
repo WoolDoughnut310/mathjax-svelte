@@ -72,6 +72,7 @@ export default function useMathJax({ node, display, t, settings }: MathJaxConfig
 				throw new Error('MathJax render cancelled');
 			}
 
+			chtml.clearCache();
 			const dom = tex_chtml_html.convert(math, {
 				display,
 				...metrics,
