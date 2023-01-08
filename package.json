@@ -49,7 +49,7 @@
 		"vite": "^4.0.0"
 	},
 	"type": "module",
-	"dependencies": {
-		"mathjax-full": "^3.2.2"
+	"peerDependencies": {
+		"mathjax-full": "3.x"
 	}
 }

@@ -2,10 +2,14 @@
 
 Svelte component for MathJax
 
+Based on [mathjax-react](https://github.com/CharlieMcVicker/mathjax-react/)
+
 ## Installation
 
 ```bash
 npm i mathjax-svelte
+
+npm i mathjax-full@3
 ```
 
 ## Usage
