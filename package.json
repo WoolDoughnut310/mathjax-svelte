@@ -1,6 +1,27 @@
 {
 	"name": "mathjax-svelte",
-	"version": "0.0.1",
+	"version": "0.0.2",
+	"homepage": "https://github.com/WoolDoughnut310/mathjax-svelte",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/WoolDoughnut310/mathjax-svelte.git"
+	},
+	"description": "A Svelte component for MathJax",
+	"license": "MIT",
+	"keywords": [
+		"svelte",
+		"mathjax",
+		"math",
+		"latex",
+		"tex",
+		"browser",
+		"chtml",
+		"mathjax-v3"
+	],
+	"author": "WoolDoughnut310 (https://cs310.hashnode.dev/)",
+	"bugs": {
+		"url": "https://github.com/WoolDoughnut310/mathjax-svelte/issues"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "svelte-kit sync && svelte-package",
